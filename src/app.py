@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_login import LoginManager
+from login import login_manager  # importa il login manager già configurato
 from routes.auth_routes import auth_bp
 from routes.public_routes import public_bp
 from routes.private_routes import private_bp
@@ -15,7 +15,6 @@ logging.basicConfig(
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "Chiave segretissima"
 
-login_manager = LoginManager()
 login_manager.init_app(app)
 
 app.register_blueprint(auth_bp)

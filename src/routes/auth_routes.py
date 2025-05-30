@@ -1,34 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import UserMixin, login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from dao import utenti_dao
+from login import User
 
 auth_bp = Blueprint('auth', __name__)
-
-class User(UserMixin):
-    def __init__(self, id, nome, cognome, email, password, ruolo):
-        self.id = id
-        self.nome = nome
-        self.cognome = cognome
-        self.email = email
-        self.password = password
-        self.ruolo = ruolo
-
-from app import login_manager
-
-@login_manager.user_loader
-def load_user(id):
-    utente = utenti_dao.get_utente_by_id(id)
-    if utente is None:
-        return None
-    return User(
-        id=utente["id"],
-        nome=utente["nome"],
-        cognome=utente["cognome"],
-        email=utente["email"],
-        password=utente["password"],
-        ruolo=utente["ruolo"]
-    )
 
 @auth_bp.route("/signup")
 def signup():
@@ -37,6 +13,15 @@ def signup():
 @auth_bp.route("/login")
 def login():
     return render_template("login.html")
+
+@auth_bp.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    flash("Logout effettuato con successo!", "success")
+    return redirect(url_for("public.home"))
+
+# form actions
 
 @auth_bp.route("/subscribe", methods=["POST"])
 def subscribe():
@@ -82,9 +67,4 @@ def authenticate():
     flash("Login effettuato con successo!", "success")
     return redirect(url_for("public.home"))
 
-@auth_bp.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    flash("Logout effettuato con successo!", "success")
-    return redirect(url_for("public.home"))
+
