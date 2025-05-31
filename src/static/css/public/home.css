@@ -1,0 +1,17 @@
+/* Ultime performance annunciate */
+
+.no-overflow {
+  width: 100%;
+  height: 400px;          /* Altezza fissa */
+  object-fit: cover;      /* Ritaglia senza distorsione */
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+/* Slideshow */
+
+.carousel-img {
+  height: 500px; /* Altezza fissa */
+  object-fit: cover;
+  object-position: center;
+}

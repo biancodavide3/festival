@@ -69,6 +69,24 @@ def get_performances_domenica():
     except sqlite3.Error as e:
         logging.error(f"get_performances_domenica: {e}")
         return []
+    
+def get_ultime_performances_pubblicate(limit=6):
+    try:
+        sql = """
+        SELECT * FROM performances
+        WHERE pubblicato = 1
+        ORDER BY data_inserimento DESC
+        LIMIT ?
+        """
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(sql, (limit,))
+            performances = cursor.fetchall()
+            cursor.close()
+        return performances
+    except sqlite3.Error as e:
+        logging.error(f"get_ultime_performances_pubblicate: {e}")
+        return []
 
 def get_performances_pubblicate_by_organizzatore(id_organizzatore):
     try:
