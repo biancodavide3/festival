@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS performances(
     descrizione TEXT NOT NULL,
     palco TEXT CHECK(palco IN('Palco A','Palco B','Palco C')) NOT NULL,
     genere TEXT NOT NULL,
-    immagine BLOB,
+    immagine TEXT NOT NULL,
     pubblicato INTEGER DEFAULT 0,
     id_organizzatore INTEGER NOT NULL,
     data_inserimento TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -50,26 +50,29 @@ INSERT INTO utenti (nome, cognome, email, password, ruolo) VALUES
 ('Giorgio', 'Neri', 'giorgio@gmail.com', 'partecipante123', 'partecipante'),
 ('Elisa', 'Rossi', 'elisa@gmail.com', 'partecipante123', 'partecipante');
 
-INSERT INTO performances (nome_artista, giorno, orario, durata, descrizione, palco, genere, pubblicato, id_organizzatore)
+INSERT INTO performances (nome_artista, giorno, orario, durata, descrizione, palco, genere, immagine, pubblicato, id_organizzatore)
 VALUES
 -- Venerdì
-('Solar Echoes', 'Venerdi', '18:00', 60, 'Un viaggio sonoro attraverso ambient e downtempo elettronico.', 'Palco A', 'Elettronica', 1, 1),
-('The Wood Spirits', 'Venerdi', '19:15', 45, 'Folk acustico con strumenti tradizionali da tutto il mondo.', 'Palco B', 'World Music', 1, 1),
-('Nocturna Loop', 'Venerdi', '20:30', 50, 'Live set techno dark su visuali oniriche.', 'Palco C', 'Techno', 1, 2),
-('Mystic Flows', 'Venerdi', '21:45', 40, 'Jazz psichedelico in ambientazione multisensoriale.', 'Palco A', 'Jazz', 1, 2),
-('Hidden Frequencies', 'Venerdi', '23:00', 60, 'Performance sperimentale binaurale.', 'Palco B', 'Sperimentale', 0, 1), -- non pubblicata
+('Solar Echoes', 'Venerdi', '18:00', 60, 'Un viaggio sonoro attraverso ambient e downtempo elettronico.', 'Palco A', 'Elettronica', '/static/images/uploaded/4a1e9b25-9f3c-4ea5-a7b2-b2d68f453b91.jpg', 1, 1),
+('The Wood Spirits', 'Venerdi', '19:15', 45, 'Folk acustico con strumenti tradizionali da tutto il mondo.', 'Palco B', 'World Music', '/static/images/uploaded/fd1a3e92-6c90-44e2-88b6-080b09e66c98.jpg', 1, 1),
+('Nocturna Loop', 'Venerdi', '20:30', 50, 'Live set techno dark su visuali oniriche.', 'Palco C', 'Techno', '/static/images/uploaded/0f2b2e93-5c18-4a2e-8e61-0150982c12c4.jpg', 1, 2),
+('Mystic Flows', 'Venerdi', '21:45', 40, 'Jazz psichedelico in ambientazione multisensoriale.', 'Palco A', 'Jazz', '/static/images/uploaded/2e4c8cb1-0e0e-4b9a-9c6f-3a22f3c64f2d.jpg', 1, 2),
+('Hidden Frequencies', 'Venerdi', '23:00', 60, 'Performance sperimentale binaurale.', 'Palco B', 'Sperimentale', '/static/images/uploaded/a92f27d3-25cb-41f3-9e75-85e17a14ac08.jpg', 0, 1),
+
 -- Sabato
-('Echo Nomads', 'Sabato', '17:00', 60, 'Fusion tra sonorità mediorientali e synth analogici.', 'Palco A', 'Fusion', 1, 1),
-('Lumen Sky', 'Sabato', '18:30', 45, 'Indie-pop con elementi elettronici ambient.', 'Palco B', 'Indie Pop', 1, 1),
-('Drift Mechanics', 'Sabato', '19:45', 60, 'Drum & Bass atmosferico con video generativi.', 'Palco C', 'D&B', 1, 2),
-('Aurora Collective', 'Sabato', '21:00', 50, 'Ensemble elettronico + strumenti dal vivo.', 'Palco A', 'Live Set', 1, 2),
-('Nebula Bloom', 'Sabato', '22:30', 40, 'Trio vocale femminile in performance visiva.', 'Palco B', 'Vocal', 0, 1), -- non pubblicata
+('Echo Nomads', 'Sabato', '17:00', 60, 'Fusion tra sonorità mediorientali e synth analogici.', 'Palco A', 'Fusion', '/static/images/uploaded/719f4c01-b394-40b1-b1ef-31d0e8cb29f9.jpg', 1, 1),
+('Lumen Sky', 'Sabato', '18:30', 45, 'Indie-pop con elementi elettronici ambient.', 'Palco B', 'Indie Pop', '/static/images/uploaded/6b4c1a5a-2bb9-4f1e-a2c2-cf39cb8c46cd.jpg', 1, 1),
+('Drift Mechanics', 'Sabato', '19:45', 60, 'Drum & Bass atmosferico con video generativi.', 'Palco C', 'D&B', '/static/images/uploaded/89134b82-41e7-4552-bfaa-fb687261f4ee.jpg', 1, 2),
+('Aurora Collective', 'Sabato', '21:00', 50, 'Ensemble elettronico + strumenti dal vivo.', 'Palco A', 'Live Set', '/static/images/uploaded/dfb1d95d-d590-4e0c-a8ec-0a631fbcc89c.jpg', 1, 2),
+('Nebula Bloom', 'Sabato', '22:30', 40, 'Trio vocale femminile in performance visiva.', 'Palco B', 'Vocal', '/static/images/uploaded/3e80cf79-1c64-4045-9d99-fbe05843f9cd.jpg', 0, 1),
+
 -- Domenica
-('Raindrop Ritual', 'Domenica', '16:00', 45, 'Percussioni tribali e canto armonico.', 'Palco A', 'Tribal', 1, 1),
-('Kaleido Waves', 'Domenica', '17:15', 50, 'Pop psichedelico in quadrofonia immersiva.', 'Palco B', 'Psy Pop', 1, 1),
-('Analog Forest', 'Domenica', '18:30', 60, 'Composizioni ambient ispirate alla natura.', 'Palco C', 'Ambient', 1, 2),
-('Digital Sorcery', 'Domenica', '20:00', 55, 'Set IDM con visuals ispirati al glitch art.', 'Palco A', 'IDM', 1, 2),
-('The Final Echo', 'Domenica', '21:30', 60, 'Set collettivo con chiusura multisensoriale.', 'Palco B', 'Multigenere', 0, 1); -- non pubblicata
+('Raindrop Ritual', 'Domenica', '16:00', 45, 'Percussioni tribali e canto armonico.', 'Palco A', 'Tribal', '/static/images/uploaded/efc5ea0d-195f-4e35-bb76-2c119d1c60e1.jpg', 1, 1),
+('Kaleido Waves', 'Domenica', '17:15', 50, 'Pop psichedelico in quadrofonia immersiva.', 'Palco B', 'Psy Pop', '/static/images/uploaded/cc2c4b6f-90f7-45d0-81e0-d650e1901e47.jpg', 1, 1),
+('Analog Forest', 'Domenica', '18:30', 60, 'Composizioni ambient ispirate alla natura.', 'Palco C', 'Ambient', '/static/images/uploaded/90a924f9-3f7d-4cf0-a01c-c7e384bf99cd.jpg', 1, 2),
+('Digital Sorcery', 'Domenica', '20:00', 55, 'Set IDM con visuals ispirati al glitch art.', 'Palco A', 'IDM', '/static/images/uploaded/ce2b2a06-2cbf-4f3b-b07d-f73a5bfe30d4.jpg', 1, 2),
+('The Final Echo', 'Domenica', '21:30', 60, 'Set collettivo con chiusura multisensoriale.', 'Palco B', 'Multigenere', '/static/images/uploaded/ae16a19b-fd8d-4d13-b1f2-9a80e42e02a1.jpg', 0, 1);
+
 
 INSERT INTO biglietti (id_partecipante, tipo) VALUES
 (3, 'Biglietto Giornaliero'),

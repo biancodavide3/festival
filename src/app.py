@@ -12,7 +12,7 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 app.config["SECRET_KEY"] = "Chiave segretissima"
 
 login_manager.init_app(app)
