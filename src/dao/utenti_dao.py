@@ -38,12 +38,15 @@ def add_utente(nome, cognome, email, password, ruolo):
         with get_db_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(sql, (nome, cognome, email, password, ruolo))
+            user_id = cursor.lastrowid
             conn.commit()
             cursor.close()
-        return True
+        if user_id:
+            return user_id
+        return None
     except sqlite3.Error as e:
         logging.error(f"add_utente: {e}")
-        return False
+        return None
 
 def get_numero_organizzatori():
     try:

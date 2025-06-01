@@ -10,17 +10,26 @@
 />
 {% endblock %} {% block content %}
 
-<div id="flash-notifications" class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1050; max-width: 400px;">
-  {% with messages = get_flashed_messages(with_categories=false) %}
-    {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-success alert-dismissible fade show shadow" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
+<div
+  id="flash-notifications"
+  class="position-fixed top-0 start-50 translate-middle-x mt-3"
+  style="z-index: 1050; max-width: 400px"
+>
+  {% with messages = get_flashed_messages(with_categories=false) %} {% if
+  messages %} {% for message in messages %}
+  <div
+    class="alert alert-success alert-dismissible fade show shadow"
+    role="alert"
+  >
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %} {% endif %} {% endwith %}
 </div>
 <!-- Hero -->
 <section
@@ -171,31 +180,32 @@
 <!-- About -->
 <section class="container mt-5">
   <div class="row align-items-center">
-    <!-- Colonna Testo -->
     <div class="col-md-6 mb-4 mb-md-0">
       <div
         class="card border rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center"
       >
-        <h2 class="mb-3">Chi Siamo</h2>
+        <h2 class="mb-3">Naviga le Performance</h2>
         <p class="fs-5">
-          Siamo un collettivo di artisti e organizzatori appassionati di musica
-          elettronica sperimentale. Il nostro obiettivo è creare esperienze
-          sonore uniche che uniscano musica, arte e natura.
+          Esplora la nostra vasta selezione di artisti, ognuno dei quali si esibira' in una
+          splendida performance durante uno dei tre giorni del festival.
         </p>
         <a href="#" class="btn btn-primary mt-3 align-self-start"
-          >Scopri il Festival</a
+          >Naviga le Performance</a
         >
       </div>
     </div>
-
-    <!-- Colonna Immagine -->
-    <div class="col-md-6">
-      <div class="overflow-hidden rounded">
-        <img
-          src="https://placehold.co/600x400?text=Chi+Siamo"
-          class="img-fluid w-100"
-          alt="Chi Siamo"
-        />
+    <div class="col-md-6 mb-4 mb-md-0">
+      <div
+        class="card border rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center"
+      >
+        <h2 class="mb-3">Area Riservata</h2>
+        <p class="fs-5">
+          Accedi alla tua Area Riservata o effettua la Registrazione per acquistare un biglietto
+          per partecipare al Festival.
+        </p>
+        <a href="#" class="btn btn-primary mt-3 align-self-start"
+          >Area Riservata</a
+        >
       </div>
     </div>
   </div>

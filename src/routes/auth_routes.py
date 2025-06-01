@@ -43,7 +43,16 @@ def subscribe():
     if ruolo not in ("organizzatore", "partecipante"):
         flash("Ruolo non valido", "error")
         return redirect(url_for("auth.signup"))
-    utenti_dao.add_utente(nome, cognome, email, password_hash, ruolo)
+    id = utenti_dao.add_utente(nome, cognome, email, password_hash, ruolo)
+    user = User(
+        id=id,
+        nome=nome,
+        cognome=cognome,
+        email=email,
+        password=password_hash,
+        ruolo=ruolo
+    )
+    login_user(user)
     flash("Registrazione effettuata con successo!", "success")
     return redirect(url_for("public.home"))
 
