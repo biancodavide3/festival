@@ -7,3 +7,12 @@ public_bp = Blueprint('public', __name__)
 def home():
     ultime_performances = performances_dao.get_ultime_performances_pubblicate()
     return render_template("public/home.html", performances=ultime_performances)
+
+@public_bp.route("/performances")
+def performances():
+    return render_template("public/performances.html")
+
+@public_bp.route("/performances/<int:id>")
+def performance(id):
+    perf = performances_dao.get_performance_by_id(id)
+    return render_template("public/performance.html", performance=perf)

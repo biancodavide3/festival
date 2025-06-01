@@ -6,7 +6,7 @@
 />
 <link
   rel="stylesheet"
-  href="{{ url_for('static', filename='css/public/home.css') }}"
+  href="{{ url_for('static', filename='css/public/card.css') }}"
 />
 {% endblock %} {% block content %}
 
@@ -31,6 +31,7 @@
   </div>
   {% endfor %} {% endif %} {% endwith %}
 </div>
+
 <!-- Hero -->
 <section
   class="hero-section vh-100 d-flex align-items-center justify-content-center text-white text-center rounded"
@@ -82,7 +83,12 @@
             {{ perf['giorno'] }} · {{ perf['orario'] }} · {{ perf['durata'] }}
             min
           </p>
-          <a href="#" class="btn btn-primary">Scopri di più</a>
+          <a
+            href="{{ url_for('public.performance', id=perf['id']) }}"
+            class="btn btn-primary"
+          >
+            Scopri di più
+          </a>
         </div>
       </div>
     </div>
@@ -186,10 +192,11 @@
       >
         <h2 class="mb-3">Naviga le Performance</h2>
         <p class="fs-5">
-          Esplora la nostra vasta selezione di artisti, ognuno dei quali si esibira' in una
-          splendida performance durante uno dei tre giorni del festival.
+          Esplora la nostra vasta selezione di artisti, ognuno dei quali si
+          esibira' in una splendida performance durante uno dei tre giorni del
+          festival.
         </p>
-        <a href="#" class="btn btn-primary mt-3 align-self-start"
+        <a href="{{ url_for('public.performances') }}" class="btn btn-primary mt-3 align-self-start"
           >Naviga le Performance</a
         >
       </div>
@@ -200,8 +207,8 @@
       >
         <h2 class="mb-3">Area Riservata</h2>
         <p class="fs-5">
-          Accedi alla tua Area Riservata o effettua la Registrazione per acquistare un biglietto
-          per partecipare al Festival.
+          Accedi alla tua Area Riservata o effettua la Registrazione per
+          acquistare un biglietto per partecipare al Festival.
         </p>
         <a href="#" class="btn btn-primary mt-3 align-self-start"
           >Area Riservata</a

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{{ performance.nome_artista }} | Aurora Soundwave{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-6">
+            <img src="{{ performance.immagine }}" alt="{{ performance.nome_artista }}" class="img-fluid rounded shadow-sm">
+        </div>
+        <div class="col-lg-6">
+            <h1 class="display-5">{{ performance.nome_artista }}</h1>
+            <p class="lead text-muted">{{ performance.genere }}</p>
+
+            <hr>
+
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item"><strong>Giorno:</strong> {{ performance.giorno }}</li>
+                <li class="list-group-item"><strong>Orario:</strong> {{ performance.orario }}</li>
+                <li class="list-group-item"><strong>Durata:</strong> {{ performance.durata }} minuti</li>
+                <li class="list-group-item"><strong>Palco:</strong> {{ performance.palco }}</li>
+                <li class="list-group-item"><strong>Inserita il:</strong> {{ performance.data_inserimento }}</li>
+            </ul>
+
+            <div class="mb-4">
+                <h5>Descrizione</h5>
+                <p class="text-justify">{{ performance.descrizione }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 text-center">
+        <a href="{{ url_for('public.performances') }}" class="btn btn-outline-primary">
+            ← Torna alla lista delle performance
+        </a>
+    </div>
+</div>
+{% endblock %}
