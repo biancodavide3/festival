@@ -18,13 +18,19 @@ def get_numero_performance_pubblicate():
     except sqlite3.Error as e:
         logging.error(f"get_numero_performance_pubblicate: {e}")
         return 0
-
-def get_performances_venerdi():
+    
+def get_performances_ordinate():
     try:
         sql = """
-        SELECT * FROM performances
-        WHERE pubblicato = 1 AND giorno = 'Venerdi'
-        ORDER BY orario
+            SELECT * FROM performances
+            WHERE pubblicato = 1
+            ORDER BY 
+                CASE giorno
+                    WHEN 'Venerdi' THEN 1
+                    WHEN 'Sabato' THEN 2
+                    WHEN 'Domenica' THEN 3
+                END,
+                orario ASC
         """
         with get_db_connection() as conn:
             cursor = conn.cursor()
@@ -33,41 +39,27 @@ def get_performances_venerdi():
             cursor.close()
         return performances
     except sqlite3.Error as e:
-        logging.error(f"get_performances_venerdi: {e}")
+        logging.error(f"get_performances_ordinate: {e}")
         return []
 
-def get_performances_sabato():
+def get_performances_by_giorno(giorno):
     try:
-        sql = """
-        SELECT * FROM performances
-        WHERE pubblicato = 1 AND giorno = 'Sabato'
-        ORDER BY orario
-        """
-        with get_db_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(sql)
-            performances = cursor.fetchall()
-            cursor.close()
-        return performances
-    except sqlite3.Error as e:
-        logging.error(f"get_performances_sabato: {e}")
-        return []
+        if giorno not in ('Venerdi', 'Sabato', 'Domenica'):
+            logging.error(f"Giorno non valido: {giorno}")
 
-def get_performances_domenica():
-    try:
         sql = """
         SELECT * FROM performances
-        WHERE pubblicato = 1 AND giorno = 'Domenica'
+        WHERE pubblicato = 1 AND giorno = ?
         ORDER BY orario
         """
         with get_db_connection() as conn:
             cursor = conn.cursor()
-            cursor.execute(sql)
+            cursor.execute(sql, (giorno,))
             performances = cursor.fetchall()
             cursor.close()
         return performances
-    except sqlite3.Error as e:
-        logging.error(f"get_performances_domenica: {e}")
+    except (sqlite3.Error, ValueError) as e:
+        logging.error(f"get_performances_by_giorno: {e}")
         return []
     
 def get_ultime_performances_pubblicate(limit=6):

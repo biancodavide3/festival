@@ -10,7 +10,8 @@ def home():
 
 @public_bp.route("/performances")
 def performances():
-    return render_template("public/performances.html")
+    performances_ordinate = performances_dao.get_performances_ordinate()
+    return render_template("public/performances.html", performances=performances_ordinate)
 
 @public_bp.route("/performances/<int:id>")
 def performance(id):
