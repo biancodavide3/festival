@@ -10,8 +10,20 @@ def home():
 
 @public_bp.route("/performances")
 def performances():
-    performances_ordinate = performances_dao.get_performances_ordinate()
-    return render_template("public/performances.html", performances=performances_ordinate)
+    giorno = request.args.get('giorno')
+    palco = request.args.get('palco')
+    genere = request.args.get('genere')
+    filtri_presenti = any([
+        giorno in ('Venerdi', 'Sabato', 'Domenica'),
+        palco in ('Palco A', 'Palco B', 'Palco C'),
+        genere in ['Rock', 'Pop', 'Jazz', 'Electronic', 'Hip-Hop', 'Classica']
+    ])
+    if filtri_presenti:
+        performances = performances_dao.get_performances_filtrate(giorno, palco, genere)
+    else:
+        performances = performances_dao.get_performances_ordinate()
+    return render_template("public/performances.html", performances=performances)
+
 
 @public_bp.route("/performances/<int:id>")
 def performance(id):

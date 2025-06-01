@@ -1,12 +1,80 @@
-{% extends "base.html" %} {% block title %}Home | Aurora Soundwave{% endblock %}
+{% extends "base.html" %} {% block title %}Performances | Aurora Soundwave{% endblock %}
 {% block styles %} {% endblock %} 
-{% block content %} 
-<!-- Ultime performance annunciate -->
+{% block content %}
+
+<!-- Intestazione + Filtri (in una card) -->
+<section class="container mt-5 mb-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <form method="get">
+        <div class="row align-items-center justify-content-between">
+          <!-- Titolo e sottotitolo -->
+          <div class="col-md-6 mb-3 mb-md-0">
+            <h2 class="h5 fw-bold mb-1">Esplora le performance del festival</h2>
+            <p class="text-muted mb-0">Filtra per giorno, palco e genere musicale</p>
+          </div>
+
+          <!-- Filtri -->
+          <div class="col-md-6">
+            <div class="row g-2">
+              <!-- Giorno -->
+              <div class="col-12 col-md-4">
+                <select
+                  name="giorno"
+                  class="form-select"
+                  onchange="this.form.submit()"
+                >
+                  <option value="">Tutti i giorni</option>
+                  <option value="Venerdi" {% if request.args.get('giorno') == 'Venerdi' %}selected{% endif %}>Venerdì</option>
+                  <option value="Sabato" {% if request.args.get('giorno') == 'Sabato' %}selected{% endif %}>Sabato</option>
+                  <option value="Domenica" {% if request.args.get('giorno') == 'Domenica' %}selected{% endif %}>Domenica</option>
+                </select>
+              </div>
+
+              <!-- Palco -->
+              <div class="col-12 col-md-4">
+                <select
+                  name="palco"
+                  class="form-select"
+                  onchange="this.form.submit()"
+                >
+                  <option value="">Tutti i palchi</option>
+                  <option value="Palco A" {% if request.args.get('palco') == 'Palco A' %}selected{% endif %}>Palco A</option>
+                  <option value="Palco B" {% if request.args.get('palco') == 'Palco B' %}selected{% endif %}>Palco B</option>
+                  <option value="Palco C" {% if request.args.get('palco') == 'Palco C' %}selected{% endif %}>Palco C</option>
+                </select>
+              </div>
+
+              <!-- Genere -->
+              <div class="col-12 col-md-4">
+                <select
+                  name="genere"
+                  class="form-select"
+                  onchange="this.form.submit()"
+                >
+                  <option value="">Tutti i generi</option>
+                  <option value="Rock" {% if request.args.get('genere') == 'Rock' %}selected{% endif %}>Rock</option>
+                  <option value="Pop" {% if request.args.get('genere') == 'Pop' %}selected{% endif %}>Pop</option>
+                  <option value="Jazz" {% if request.args.get('genere') == 'Jazz' %}selected{% endif %}>Jazz</option>
+                  <option value="Electronic" {% if request.args.get('genere') == 'Electronic' %}selected{% endif %}>Electronic</option>
+                  <option value="Hip-Hop" {% if request.args.get('genere') == 'Hip-Hop' %}selected{% endif %}>Hip-Hop</option>
+                  <option value="Classica" {% if request.args.get('genere') == 'Classica' %}selected{% endif %}>Classica</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Performances ordinate o filtrate -->
 <section class="container mt-5">
   <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for perf in performances %}
     <div class="col">
-      <div class="card h-100">
+      <div class="card h-100 shadow-sm border-0">
         <img
           src="{{ perf['immagine'] }}"
           class="card-img-top no-overflow"

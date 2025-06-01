@@ -19,6 +19,31 @@ def get_numero_performance_pubblicate():
         logging.error(f"get_numero_performance_pubblicate: {e}")
         return 0
     
+def get_performances_filtrate(giorno=None, palco=None, genere=None):
+    try:
+        sql = "SELECT * FROM performances WHERE pubblicato = 1"
+        params = []
+
+        if giorno:
+            sql += " AND giorno = ?"
+            params.append(giorno)
+        if palco:
+            sql += " AND palco = ?"
+            params.append(palco)
+        if genere:
+            sql += " AND genere = ?"
+            params.append(genere)
+
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(sql, tuple(params))
+            performances = cursor.fetchall()
+            cursor.close()
+        return performances
+    except sqlite3.Error as e:
+        logging.error(f"get_performances_filtrate: {e}")
+        return []
+    
 def get_performances_ordinate():
     try:
         sql = """
@@ -40,26 +65,6 @@ def get_performances_ordinate():
         return performances
     except sqlite3.Error as e:
         logging.error(f"get_performances_ordinate: {e}")
-        return []
-
-def get_performances_by_giorno(giorno):
-    try:
-        if giorno not in ('Venerdi', 'Sabato', 'Domenica'):
-            logging.error(f"Giorno non valido: {giorno}")
-
-        sql = """
-        SELECT * FROM performances
-        WHERE pubblicato = 1 AND giorno = ?
-        ORDER BY orario
-        """
-        with get_db_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(sql, (giorno,))
-            performances = cursor.fetchall()
-            cursor.close()
-        return performances
-    except (sqlite3.Error, ValueError) as e:
-        logging.error(f"get_performances_by_giorno: {e}")
         return []
     
 def get_ultime_performances_pubblicate(limit=6):
