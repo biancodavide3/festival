@@ -2,6 +2,9 @@ from flask_login import LoginManager, UserMixin
 from dao import utenti_dao
 
 login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
+login_manager.login_message = 'Effettua il login per accedere a questa pagina.'
+login_manager.login_message_category = "danger"
 
 class User(UserMixin):
     def __init__(self, id, nome, cognome, email, password, ruolo):

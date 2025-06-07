@@ -19,7 +19,7 @@
         <ul class="list-unstyled">
           <li class="mb-2"><a href="{{ url_for('public.home') }}" class="text-decoration-none text-dark">Home</a></li>
           <li class="mb-2"><a href="{{ url_for('public.performances') }}" class="text-decoration-none text-dark">Performance</a></li>
-          <li class="mb-2"><a href="#" class="text-decoration-none text-dark">Area Riservata</a></li>
+          <li class="mb-2"><a href="{{ url_for('private.reserved')}}" class="text-decoration-none text-dark">Area Riservata</a></li>
           {% if current_user.is_authenticated %}
           <li class="mb-2"><a href="{{ url_for('auth.logout') }}" class="text-decoration-none text-dark">Logout</a></li>
           {% else %}

@@ -92,6 +92,14 @@
           <button type="submit" class="btn btn-primary w-100">
             Registrati
           </button>
+
+          <div class="text-center mt-3">
+            <p class="mb-0">
+              Sei già registrato?
+              <a href="{{ url_for('auth.login') }}">Accedi</a>
+              <a href="{{ url_for('public.home') }}">Home</a>
+            </p>
+          </div>
         </form>
       </div>
     </main>

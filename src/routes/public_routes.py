@@ -10,6 +10,7 @@ def home():
 
 @public_bp.route("/performances")
 def performances():
+    n = performances_dao.get_numero_performance_pubblicate()
     giorno = request.args.get('giorno')
     palco = request.args.get('palco')
     genere = request.args.get('genere')
@@ -22,7 +23,7 @@ def performances():
         performances = performances_dao.get_performances_filtrate(giorno, palco, genere)
     else:
         performances = performances_dao.get_performances_ordinate()
-    return render_template("public/performances.html", performances=performances)
+    return render_template("public/performances.html", performances=performances, numero_performance=n)
 
 
 @public_bp.route("/performances/<int:id>")

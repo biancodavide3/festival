@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block title %}{{ user.nome }} {{ user.cognome }} |
+Aurora Soundwave{% endblock %} 
+{% block content %} 
+<div
+  id="flash-notifications"
+  class="position-fixed top-0 start-50 translate-middle-x mt-3"
+  style="z-index: 1050; max-width: 400px"
+>
+  {% with messages = get_flashed_messages(with_categories=false) %} {% if
+  messages %} {% for message in messages %}
+  <div
+    class="alert alert-success alert-dismissible fade show shadow"
+    role="alert"
+  >
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %} {% endif %} {% endwith %}
+</div>
+{% endblock %}

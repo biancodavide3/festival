@@ -54,7 +54,7 @@ def subscribe():
     )
     login_user(user)
     flash("Registrazione effettuata con successo!", "success")
-    return redirect(url_for("public.home"))
+    return redirect(url_for("private.reserved"))
 
 @auth_bp.route("/authenticate", methods=["POST"])
 def authenticate():
@@ -74,6 +74,6 @@ def authenticate():
     )
     login_user(user)
     flash("Login effettuato con successo!", "success")
-    return redirect(url_for("public.home"))
+    return redirect(url_for("private.reserved"))
 
 
