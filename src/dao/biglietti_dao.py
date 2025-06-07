@@ -6,19 +6,6 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-def get_numero_totale_biglietti():
-    try:
-        sql = "SELECT COUNT(*) FROM biglietti"
-        with get_db_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(sql)
-            totale = cursor.fetchone()[0]
-            cursor.close()
-        return totale
-    except sqlite3.Error as e:
-        logging.error(f"get_numero_totale_biglietti: {e}")
-        return 0
-
 def get_statistiche_biglietti_per_giorno():
     try:
         sql = """
@@ -71,7 +58,7 @@ def get_biglietto_by_partecipante(id_partecipante):
         logging.error(f"get_biglietto_by_partecipante: {e}")
         return None
 
-def add_biglietto(id_partecipante:int, tipo, giorni):
+def add_biglietto(id_partecipante, tipo, giorni):
     try:
         sql_biglietto = "INSERT INTO biglietti (id_partecipante, tipo) VALUES (?, ?)"
         sql_giorni = "INSERT INTO biglietti_giorni (id_biglietto, giorno) VALUES (?, ?)"

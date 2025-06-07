@@ -168,27 +168,6 @@ def publish_bozza(id_performance, id_organizzatore):
         logging.error(f"publish_bozza: {e}")
         return False
 
-def delete_bozza(id_performance, id_organizzatore):
-    try:
-        sql_check = "SELECT pubblicato FROM performances WHERE id = ? AND id_organizzatore = ?"
-        sql_delete = "DELETE FROM performances WHERE id = ? AND id_organizzatore = ? AND pubblicato = 0"
-
-        with get_db_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute(sql_check, (id_performance, id_organizzatore))
-            row = cursor.fetchone()
-            if row and row["pubblicato"] == 0:
-                cursor.execute(sql_delete, (id_performance, id_organizzatore))
-                conn.commit()
-                deleted = True
-            else:
-                deleted = False
-            cursor.close()
-        return deleted
-    except sqlite3.Error as e:
-        logging.error(f"delete_bozza: {e}")
-        return False
-
 def update_performance_if_non_pubblicata(id_performance, id_organizzatore, nome_artista, giorno, orario, durata, descrizione, palco, genere):
     try:
         sql_check = "SELECT pubblicato FROM performances WHERE id = ? AND id_organizzatore = ?"
