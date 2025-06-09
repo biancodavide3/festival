@@ -128,17 +128,17 @@ def get_bozze_by_organizzatore(id_organizzatore):
         logging.error(f"get_bozze_by_organizzatore: {e}")
         return []
 
-def add_bozza(nome_artista, giorno, orario, durata, descrizione, palco, genere, id_organizzatore):
+def add_bozza(nome_artista, giorno, orario, durata, descrizione, palco, genere, immagine, id_organizzatore):
     try:
         sql = """
         INSERT INTO performances (
-            nome_artista, giorno, orario, durata, descrizione, palco, genere, pubblicato, id_organizzatore
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?)
+            nome_artista, giorno, orario, durata, descrizione, palco, genere, immagine, pubblicato, id_organizzatore
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, ?)
         """
         with get_db_connection() as conn:
             cursor = conn.cursor()
             cursor.execute(sql, (
-                nome_artista, giorno, orario, durata, descrizione, palco, genere, id_organizzatore
+                nome_artista, giorno, orario, durata, descrizione, palco, genere, immagine, id_organizzatore
             ))
             conn.commit()
             cursor.close()

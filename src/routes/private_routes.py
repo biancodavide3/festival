@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, redirect, request, url_for, flash
+from flask import Blueprint, render_template, redirect, request, url_for, flash, current_app
 from flask_login import current_user, login_required
 from dao import biglietti_dao, performances_dao
+import os
+import uuid
 
 private_bp = Blueprint('private', __name__)
 
@@ -9,12 +11,17 @@ private_bp = Blueprint('private', __name__)
 def reserved():
     stats = biglietti_dao.get_statistiche_biglietti_per_giorno()
     biglietto = biglietti_dao.get_biglietto_by_partecipante(current_user.id)
+    bozze = performances_dao.get_bozze_by_organizzatore(current_user.id)
+    pubblicate = performances_dao.get_performances_pubblicate_by_organizzatore(current_user.id)
     if current_user.ruolo == "organizzatore":
-        return render_template("private/riservata_organizzatori.html", user=current_user, stats=stats)
+        return render_template("private/riservata_organizzatori.html", user=current_user, stats=stats, bozze=bozze, pubblicate=pubblicate)
     return render_template("private/riservata_partecipanti.html", user=current_user, stats=stats, biglietto=biglietto)
 
 @private_bp.route("/purchase")
+@login_required
 def compra_biglietto():
+    if current_user.ruolo == "organizzatore":
+        return redirect(url_for("private.reserved")) 
     tipo = request.form.get("tipo")
     giorni = request.form.getlist("giorni")
 
@@ -53,29 +60,93 @@ def compra_biglietto():
     flash("Biglietto acquistato con successo!", "success")
     return redirect(url_for("private.reserved"))
 
-# logica per la generazione dello uuid delle immagini
-
-@private_bp.route("/add_bozza")
+@private_bp.route("/add_bozza", methods=["POST"])
+@login_required
 def aggiungi_bozza():
-    nome_artista = request.form.get("nome_artista")
+    nome_artista = request.form.get("artista")
     giorno = request.form.get("giorno")
-    orario = request.form.get("orario")
+    orario = f"{request.form['ora']}:{request.form['minuti']}"
     durata = request.form.get("durata")
     descrizione = request.form.get("descrizione")
     palco = request.form.get("palco")
     genere = request.form.get("genere")
-    if not performances_dao.add_bozza(nome_artista, giorno, orario, durata, descrizione, palco, genere, current_user.id):
+
+    file = request.files.get("immagine")
+    if file and file.filename != "":
+        # ultimi 4 caratteri
+        estensione = file.filename[-4:]
+        nome_file = str(uuid.uuid4()) + estensione
+        percorso_cartella = os.path.join(current_app.root_path, "static", "images", "uploaded")
+        if not os.path.exists(percorso_cartella):
+            os.makedirs(percorso_cartella)
+        percorso_completo = os.path.join(percorso_cartella, nome_file)
+        file.save(percorso_completo)
+        path_db = "/static/images/uploaded/" + nome_file
+    else:
         flash("Errore nell'aggiunta della bozza", "danger")
         return redirect(url_for("private.reserved"))
+
+    success = performances_dao.add_bozza(
+        nome_artista, giorno, orario, durata, descrizione, palco, genere, path_db, current_user.id
+    )
+
+    if not success:
+        flash("Errore nell'aggiunta della bozza", "danger")
+        return redirect(url_for("private.reserved"))
+
     flash("Bozza aggiunta con successo!", "success")
     return redirect(url_for("private.reserved"))
 
-@private_bp.route("/publish_bozza")
-def pubblica_bozza():
-    id_performance = request.form.get("id_performance")
-    if not performances_dao.publish_bozza(id_performance, current_user.id):
-        flash("Errore nella pubblicazione della bozza");
+
+@private_bp.route("/publish_bozza/<int:id>", methods=["POST"])
+@login_required
+def pubblica_bozza(id):
+    if current_user.ruolo == "partecipante":
+        return redirect(url_for("private.reserved"))
+    if not performances_dao.publish_bozza(id, current_user.id):
+        flash("Errore nella pubblicazione della bozza")
         return redirect(url_for("private.reserved"))
     flash("Bozza pubblicata con successo!", "success")
     return redirect(url_for("private.reserved"))
+
+# sistema da qua, devi andare correttamente nell'altra pagina dove spunta un nuovo form
+# aggiungi anche logica di controllare sovrapposizione orari
+
+@private_bp.route("/modifica_bozza/<int:id>", methods=["GET"])
+@login_required
+def modifica_bozza(id):
+    if current_user.ruolo == "partecipante":
+        return redirect(url_for("private.reserved")) 
+    bozza = performances_dao.get_performance_by_id(id)
+    if not bozza or bozza["pubblicato"]:
+        flash("Bozza non trovata o già pubblicata.", "danger")
+        return redirect(url_for("private.reserved"))
+    return render_template("private/modifica_bozza.html", bozza=bozza)
+
+@private_bp.route("/modifica_bozza/<int:id>", methods=["POST"])
+@login_required
+def salva_modifiche_bozza(id):
+    if current_user.ruolo == "partecipante":
+        return redirect(url_for("private.reserved"))
+
+    data = request.form
+    success = performances_dao.update_performance_if_non_pubblicata(
+        id_performance=id,
+        id_organizzatore=current_user.id,
+        nome_artista=data["nome_artista"],
+        giorno=data["giorno"],
+        orario=data["orario"],
+        durata=data["durata"],
+        descrizione=data["descrizione"],
+        palco=data["palco"],
+        genere=data["genere"]
+    )
+
+    if success:
+        flash("Bozza modificata con successo!", "success")
+    else:
+        flash("Impossibile modificare la bozza (forse è già stata pubblicata).", "danger")
+    return redirect(url_for("private.reserved"))
+
+
 

@@ -1,6 +1,5 @@
 {% extends "base.html" %} {% block title %}{{ user.nome }} {{ user.cognome }} |
-Aurora Soundwave{% endblock %} 
-{% block content %} 
+Aurora Soundwave{% endblock %} {% block content %}
 <div
   id="flash-notifications"
   class="position-fixed top-0 start-50 translate-middle-x mt-3"
@@ -22,4 +21,197 @@ Aurora Soundwave{% endblock %}
   </div>
   {% endfor %} {% endif %} {% endwith %}
 </div>
+<!-- Intestazione -->
+<section class="container mt-5 mb-4">
+  <h2 class="fw-bold">Benvenuto, {{ user.nome }}</h2>
+  <p class="text-muted">Bozze e performance pubblicate</p>
+</section>
+
+<!-- Form per creare nuova bozza -->
+<section class="container mb-5">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h5 class="card-title">Aggiungi una nuova bozza</h5>
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        action="{{ url_for('private.aggiungi_bozza') }}"
+      >
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="titolo" class="form-label">Titolo</label>
+            <input type="text" class="form-control" name="titolo" required />
+          </div>
+          <div class="col-md-6">
+            <label for="artista" class="form-label">Artista</label>
+            <input type="text" class="form-control" name="artista" required />
+          </div>
+          <div class="row g-3 align-items-end">
+            <div class="col-md-2">
+              <label for="ora" class="form-label">Ora</label>
+              <select name="ora" id="ora" class="form-select" required>
+                {% for h in range(0, 24) %}
+                <option value="{{ '%02d' % h }}">{{ '%02d' % h }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-2">
+              <label for="minuti" class="form-label">Minuti</label>
+              <select name="minuti" id="minuti" class="form-select" required>
+                {% for m in range(0, 60, 5) %}
+                <option value="{{ '%02d' % m }}">{{ '%02d' % m }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label for="durata" class="form-label">Durata (minuti)</label>
+              <input
+                type="number"
+                min="1"
+                class="form-control"
+                name="durata"
+                id="durata"
+                placeholder="Es. 60"
+                required
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="giorno" class="form-label">Giorno</label>
+            <select class="form-select" name="giorno" required>
+              <option value="">Seleziona...</option>
+              <option value="Venerdi">Venerdì</option>
+              <option value="Sabato">Sabato</option>
+              <option value="Domenica">Domenica</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="palco" class="form-label">Palco</label>
+            <select class="form-select" name="palco" required>
+              <option value="">Seleziona...</option>
+              <option value="Palco A">Palco A</option>
+              <option value="Palco B">Palco B</option>
+              <option value="Palco C">Palco C</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="genere" class="form-label">Genere</label>
+            <select class="form-select" name="genere" required>
+              <option value="">Seleziona...</option>
+              <option value="Rock">Rock</option>
+              <option value="Pop">Pop</option>
+              <option value="Jazz">Jazz</option>
+              <option value="Electronic">Electronic</option>
+              <option value="Hip-Hop">Hip-Hop</option>
+              <option value="Classica">Classica</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label for="descrizione" class="form-label">Descrizione</label>
+            <textarea
+              class="form-control"
+              name="descrizione"
+              rows="3"
+            ></textarea>
+          </div>
+          <div class="col-12">
+            <label for="immagine" class="form-label"
+              >Immagine (opzionale)</label
+            >
+            <input
+              type="file"
+              class="form-control"
+              name="immagine"
+              accept="image/*"
+            />
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Salva Bozza</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- Bozze -->
+<section class="container mb-5">
+  <h4 class="mb-3">Bozze</h4>
+  <div class="row g-3">
+    {% for bozza in bozze %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        {% if bozza.immagine %}
+        <img
+          src="{{ bozza.immagine }}"
+          alt="Immagine di {{ bozza.titolo }}"
+          class="card-img-top"
+          style="object-fit: cover; height: 180px;"
+        />
+        {% endif %}
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title mt-2">{{ bozza.titolo }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ bozza.artista }}</h6>
+
+          <div class="mb-2">
+            <span class="badge bg-primary me-1">Giorno: {{ bozza.giorno }}</span>
+            <span class="badge bg-secondary me-1">Palco: {{ bozza.palco }}</span>
+            <span class="badge bg-info text-dark me-1">Genere: {{ bozza.genere }}</span>
+            {% if bozza.orario %}
+            <span class="badge bg-warning text-dark me-1">Orario: {{ bozza.orario }}</span>
+            {% endif %}
+            {% if bozza.durata %}
+            <span class="badge bg-success me-1">Durata: {{ bozza.durata }} min</span>
+            {% endif %}
+          </div>
+
+          {% if bozza.descrizione %}
+          <p class="card-text flex-grow-1">{{ bozza.descrizione }}</p>
+          {% else %}
+          <p class="card-text text-muted fst-italic">Nessuna descrizione.</p>
+          {% endif %}
+        </div>
+        <a href="{{ url_for('private.modifica_bozza', id=bozza.id) }}" class="btn btn-warning btn-sm me-2">Modifica</a>
+        <div class="card-footer text-end bg-transparent border-0">
+          <form method="POST" action="{{ url_for('private.pubblica_bozza', id=bozza.id) }}">
+            <button type="submit" class="btn btn-success btn-sm">Pubblica</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <p class="text-muted">Nessuna bozza disponibile.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- BUGGATO DA SISTEMARE -->
+
+<!-- Pubblicate -->
+<section class="container mb-5">
+  <h4 class="mb-3">Performance Pubblicate</h4>
+  <div class="row g-3">
+    {% for p in pubblicate %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ p.titolo }}</h5>
+          <p class="card-text"><strong>Artista:</strong> {{ p.artista }}</p>
+          <p class="card-text">
+            <strong>Giorno:</strong> {{ p.giorno }} | <strong>Palco:</strong> {{
+            p.palco }}
+          </p>
+          <p class="card-text"><strong>Genere:</strong> {{ p.genere }}</p>
+          <p class="card-text">{{ p.descrizione }}</p>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <p class="text-muted">Nessuna performance pubblicata.</p>
+    {% endfor %}
+  </div>
+</section>
 {% endblock %}
