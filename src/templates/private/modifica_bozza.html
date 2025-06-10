@@ -1,35 +1,98 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
+<div
+  id="flash-notifications"
+  class="position-fixed top-0 start-50 translate-middle-x mt-3"
+  style="z-index: 1050; max-width: 400px"
+>
+  {% with messages = get_flashed_messages(with_categories=false) %} {% if
+  messages %} {% for message in messages %}
+  <div
+    class="alert alert-success alert-dismissible fade show shadow"
+    role="alert"
+  >
+    {{ message }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  {% endfor %} {% endif %} {% endwith %}
+</div>
 <div class="container mt-5">
   <h2>Modifica Bozza</h2>
   <form method="POST">
     <div class="mb-3">
       <label for="nome_artista" class="form-label">Nome Artista</label>
-      <input type="text" class="form-control" name="nome_artista" value="{{ bozza.nome_artista }}">
+      <input
+        type="text"
+        class="form-control"
+        name="nome_artista"
+        value="{{ bozza.nome_artista }}"
+      />
     </div>
-    <div class="mb-3">
+    <div class="col-md-4">
       <label for="giorno" class="form-label">Giorno</label>
-      <input type="date" class="form-control" name="giorno" value="{{ bozza.giorno }}">
+      <select class="form-select" name="giorno" required>
+        <option value="">Seleziona...</option>
+        <option value="Venerdi">Venerdì</option>
+        <option value="Sabato">Sabato</option>
+        <option value="Domenica">Domenica</option>
+      </select>
     </div>
-    <div class="mb-3">
-      <label for="orario" class="form-label">Orario</label>
-      <input type="time" class="form-control" name="orario" value="{{ bozza.orario }}">
+    <div class="col-md-2">
+      <label for="ora" class="form-label">Ora</label>
+      <select name="ora" id="ora" class="form-select" required>
+        {% for h in range(0, 24) %}
+        <option value="{{ '%02d' % h }}">{{ '%02d' % h }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <label for="minuti" class="form-label">Minuti</label>
+      <select name="minuti" id="minuti" class="form-select" required>
+        {% for m in range(0, 60, 5) %}
+        <option value="{{ '%02d' % m }}">{{ '%02d' % m }}</option>
+        {% endfor %}
+      </select>
     </div>
     <div class="mb-3">
       <label for="durata" class="form-label">Durata</label>
-      <input type="text" class="form-control" name="durata" value="{{ bozza.durata }}">
+      <input
+        type="text"
+        class="form-control"
+        name="durata"
+        value="{{ bozza.durata }}"
+      />
     </div>
     <div class="mb-3">
       <label for="descrizione" class="form-label">Descrizione</label>
-      <textarea class="form-control" name="descrizione">{{ bozza.descrizione }}</textarea>
+      <textarea class="form-control" name="descrizione">
+{{ bozza.descrizione }}</textarea
+      >
     </div>
-    <div class="mb-3">
+    <div class="col-md-4">
       <label for="palco" class="form-label">Palco</label>
-      <input type="text" class="form-control" name="palco" value="{{ bozza.palco }}">
+      <select class="form-select" name="palco" required>
+        <option value="">Seleziona...</option>
+        <option value="Palco A">Palco A</option>
+        <option value="Palco B">Palco B</option>
+        <option value="Palco C">Palco C</option>
+      </select>
     </div>
-    <div class="mb-3">
+    <div class="col-md-4">
       <label for="genere" class="form-label">Genere</label>
-      <input type="text" class="form-control" name="genere" value="{{ bozza.genere }}">
+      <select class="form-select" name="genere" required>
+        <option value="">Seleziona...</option>
+        <option value="Rock">Rock</option>
+        <option value="Pop">Pop</option>
+        <option value="Jazz">Jazz</option>
+        <option value="Electronic">Electronic</option>
+        <option value="Hip-Hop">Hip-Hop</option>
+        <option value="Classica">Classica</option>
+      </select>
     </div>
     <button type="submit" class="btn btn-primary">Salva modifiche</button>
   </form>

@@ -99,7 +99,24 @@ def get_performance_by_id(id):
             cursor.close()
         return perf
     except sqlite3.Error as e:
-        logging.error(f"get_ultime_performances_pubblicate: {e}")
+        logging.error(f"get_performance_by_id: {e}")
+        return None
+
+def get_bozza_by_id(id):
+    try:
+        sql = """
+        SELECT * FROM performances
+        WHERE pubblicato = 0
+        AND id = ?
+        """
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(sql, (id,))
+            perf = cursor.fetchone()
+            cursor.close()
+        return perf
+    except sqlite3.Error as e:
+        logging.error(f"get_bozza_by_id: {e}")
         return None
 
 def get_performances_pubblicate_by_organizzatore(id_organizzatore):
@@ -168,7 +185,20 @@ def publish_bozza(id_performance, id_organizzatore):
         logging.error(f"publish_bozza: {e}")
         return False
 
-def update_performance_if_non_pubblicata(id_performance, id_organizzatore, nome_artista, giorno, orario, durata, descrizione, palco, genere):
+def get_performances_pubblicate_by_giorno_palco(giorno, palco):
+    try:
+        sql = "SELECT orario, durata FROM performances WHERE giorno = ? AND palco = ? AND pubblicato = ?"
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(sql, (giorno, palco, 1))
+            results = cursor.fetchall()
+            cursor.close()
+        return results
+    except sqlite3.Error as e:
+        logging.error(f"get_performances_by_giorno_palco: {e}")
+        return []
+
+def update_bozza(id_performance, id_organizzatore, nome_artista, giorno, orario, durata, descrizione, palco, genere):
     try:
         sql_check = "SELECT pubblicato FROM performances WHERE id = ? AND id_organizzatore = ?"
         sql_update = """
@@ -189,5 +219,5 @@ def update_performance_if_non_pubblicata(id_performance, id_organizzatore, nome_
             cursor.close()
         return updated
     except sqlite3.Error as e:
-        logging.error(f"update_performance_if_non_pubblicata: {e}")
+        logging.error(f"update_bozza: {e}")
         return False
