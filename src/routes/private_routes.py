@@ -11,21 +11,21 @@ private_bp = Blueprint('private', __name__)
 @private_bp.route("/reserved")
 @login_required
 def reserved():
-    stats = biglietti_dao.get_statistiche_biglietti_per_giorno()
     biglietto = biglietti_dao.get_biglietto_by_partecipante(current_user.id)
     bozze = performances_dao.get_bozze_by_organizzatore(current_user.id)
     pubblicate = performances_dao.get_performances_pubblicate_by_organizzatore(current_user.id)
     if current_user.ruolo == "organizzatore":
-        return render_template("private/riservata_organizzatori.html", user=current_user, stats=stats, bozze=bozze, pubblicate=pubblicate)
-    return render_template("private/riservata_partecipanti.html", user=current_user, stats=stats, biglietto=biglietto)
+        return render_template("private/riservata_organizzatori.html", user=current_user, bozze=bozze, pubblicate=pubblicate)
+    return render_template("private/riservata_partecipanti.html", user=current_user, biglietto=biglietto)
 
 # -------------------- partecipanti ------------------
 
-@private_bp.route("/purchase")
+@private_bp.route("/purchase", methods=["POST"])
 @login_required
 def compra_biglietto():
     if current_user.ruolo == "organizzatore":
         return redirect(url_for("private.reserved")) 
+
     tipo = request.form.get("tipo")
     giorni = request.form.getlist("giorni")
 
@@ -34,13 +34,15 @@ def compra_biglietto():
 
     if not tipo or tipo not in tipi_validi:
         flash("Seleziona un tipo di biglietto valido", "danger")
+        return redirect(url_for("private.reserved"))
 
+    # Validazione giorni per tipo biglietto
     if tipo == "Full Pass":
         if set(giorni) != set(giorni_validi):
             flash("Seleziona tutti i giorni per il full pass", "danger")
             return redirect(url_for("private.reserved"))  
 
-    if tipo == "Biglietto Giornaliero":
+    elif tipo == "Biglietto Giornaliero":
         if not giorni or len(giorni) != 1:
             flash("Seleziona 1 giorno valido per il biglietto", "danger")
             return redirect(url_for("private.reserved"))
@@ -48,21 +50,33 @@ def compra_biglietto():
             if g not in giorni_validi:
                 flash("Seleziona 1 giorno valido per il biglietto", "danger")
                 return redirect(url_for("private.reserved"))     
-               
-    if tipo == "Pass 2 Giorni":
+
+    elif tipo == "Pass 2 Giorni":
         if not giorni or len(giorni) != 2:
             flash("Seleziona 2 giorni validi per il biglietto", "danger")
             return redirect(url_for("private.reserved"))
         for g in giorni:
             if g not in giorni_validi:
                 flash("Seleziona 2 giorni validi per il biglietto", "danger")
-                return redirect(url_for("private.reserved"))     
+                return redirect(url_for("private.reserved"))
 
+    # Recupera le statistiche attuali
+    stats = biglietti_dao.get_statistiche_biglietti_per_giorno()
+
+    # Controllo capienza massima (200) per ogni giorno scelto
+    for giorno in giorni:
+        if stats.get(giorno) >= 3:
+            flash(f"Limite massimo di 200 partecipanti raggiunto per il giorno {giorno}. Riprova con altri giorni.", "danger")
+            return redirect(url_for("private.reserved"))
+
+    # Procedi con l'aggiunta del biglietto
     if not biglietti_dao.add_biglietto(current_user.id, tipo, giorni):
         flash("Errore nell'acquisto del biglietto. Riprova.", "danger")
         return redirect(url_for("private.reserved"))
+
     flash("Biglietto acquistato con successo!", "success")
     return redirect(url_for("private.reserved"))
+
 
 # -------------------- organizzatori ------------------
 

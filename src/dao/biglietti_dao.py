@@ -47,12 +47,13 @@ def get_biglietto_by_partecipante(id_partecipante):
         giorni = [r["giorno"] for r in righe if r["giorno"]]
 
         biglietto = {
-            "id": righe[0].get('id', ''),
+            "id": righe[0]["id"],
             "id_partecipante": righe[0]["id_partecipante"],
             "tipo": righe[0]["tipo"],
             "data_acquisto": righe[0]["data_acquisto"],
             "giorni": giorni
         }
+
         return biglietto
     except sqlite3.Error as e:
         logging.error(f"get_biglietto_by_partecipante: {e}")
