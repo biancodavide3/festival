@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
   <div class="container">
     <a class="navbar-brand" href="{{ url_for('public.home') }}"
-      >Aurora Soundwave</a
+      >Turin All Star</a
     >
     <button
       class="navbar-toggler"
@@ -19,7 +19,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a
-            class="nav-link active"
+            class="nav-link"
             aria-current="page"
             href="{{ url_for('public.home') }}"
             >Home</a
@@ -31,7 +31,9 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('private.reserved')}}">Area Riservata</a>
+          <a class="nav-link" href="{{ url_for('private.reserved')}}"
+            >Area Riservata</a
+          >
         </li>
         {% if current_user.is_authenticated %}
         <li class="nav-item">
@@ -47,15 +49,15 @@
         {% endif %}
       </ul>
       {% if current_user.is_authenticated %}
+      <a class="text-decoration-none" href="{{ url_for('private.reserved') }}">
       <div class="d-flex align-items-center ms-auto">
-        <a href="">
-          <span class="btn btn-outline-primary btn-sm rounded-pill py-1 px-3">
-            {{ current_user.nome }} {{ current_user.cognome }} -
-            <em>{{ current_user.ruolo }}</em>
-          </span>
-        </a>
+        <div class="text-primary d-flex align-items-center gap-2 px-2">
+          <i class="bi bi-person"></i>
+          <span>{{ current_user.nome }} {{ current_user.cognome }}</span>
+        </div>
       </div>
       {% endif %}
+      </a>
     </div>
   </div>
 </nav>
