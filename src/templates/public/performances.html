@@ -1,23 +1,24 @@
 {% extends "base.html" %} {% block title %}Performance{% endblock %}
-{% block styles %} {% endblock %} 
+{% block styles %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/public/card.css') }}"
+/> 
+{% endblock %} 
 {% block content %}
 
-<!-- Intestazione + Filtri (in una card) -->
+<!-- Filtri -->
 <section class="container mt-5 mb-4">
   <div class="card shadow-sm border-0">
     <div class="card-body">
       <form method="get">
         <div class="row align-items-center justify-content-between">
-          <!-- Titolo e sottotitolo -->
           <div class="col-md-6 mb-3 mb-md-0">
             <h2 class="h5 fw-bold mb-1">Esplora le performance del festival</h2>
             <p class="text-muted mb-0">Cerca tra le {{numero_performance}} disponibili</p>
           </div>
-
-          <!-- Filtri -->
           <div class="col-md-6">
             <div class="row g-2">
-              <!-- Giorno -->
               <div class="col-12 col-md-4">
                 <select
                   name="giorno"
@@ -30,8 +31,6 @@
                   <option value="Domenica" {% if request.args.get('giorno') == 'Domenica' %}selected{% endif %}>Domenica</option>
                 </select>
               </div>
-
-              <!-- Palco -->
               <div class="col-12 col-md-4">
                 <select
                   name="palco"
@@ -44,8 +43,6 @@
                   <option value="Palco C" {% if request.args.get('palco') == 'Palco C' %}selected{% endif %}>Palco C</option>
                 </select>
               </div>
-
-              <!-- Genere -->
               <div class="col-12 col-md-4">
                 <select
                   name="genere"
@@ -74,7 +71,7 @@
   <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for perf in performances %}
     <div class="col">
-      <div class="card h-100 shadow-sm border-0">
+      <div class="card shadow-sm border-0">
         <img
           src="{{ perf['immagine'] }}"
           class="card-img-top no-overflow"

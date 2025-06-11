@@ -14,16 +14,23 @@ def performances():
     giorno = request.args.get('giorno')
     palco = request.args.get('palco')
     genere = request.args.get('genere')
-    filtri_presenti = any([
-        giorno in ('Venerdi', 'Sabato', 'Domenica'),
-        palco in ('Palco A', 'Palco B', 'Palco C'),
-        genere in ['Rock', 'Pop', 'Jazz', 'Electronic', 'Hip-Hop', 'Classica']
-    ])
+
+    filtri_presenti = False
+
+    if giorno in ('Venerdi', 'Sabato', 'Domenica'):
+        filtri_presenti = True
+    if palco in ('Palco A', 'Palco B', 'Palco C'):
+        filtri_presenti = True
+    if genere in ['Rock', 'Pop', 'Jazz', 'Electronic', 'Hip-Hop', 'Classica']:
+        filtri_presenti = True
+
     if filtri_presenti:
         performances = performances_dao.get_performances_filtrate(giorno, palco, genere)
     else:
         performances = performances_dao.get_performances_ordinate()
+
     return render_template("public/performances.html", performances=performances, numero_performance=n)
+
 
 
 @public_bp.route("/performances/<int:id>")
