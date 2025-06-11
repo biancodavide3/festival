@@ -1,23 +1,43 @@
-{% extends "base.html" %} {% block title %}{{ user.nome }} {{
-user.cognome }}{% endblock %} {% block content %}
+{% extends "base.html" %} {% block title %}{{ user.nome }} {{ user.cognome }}{%
+endblock %} {% block content %}
 
 <div class="container mt-5">
-  <h2>Area Riservata Partecipanti</h2>
-
   {% if biglietto %}
-  <h3>Dettagli Biglietto</h3>
-  <ul>
-    <li><strong>Tipo:</strong> {{ biglietto.tipo }}</li>
-    <li><strong>Data Acquisto:</strong> {{ biglietto.data_acquisto }}</li>
-    <li>
-      <strong>Giorni Validità:</strong>
-      <ul>
-        {% for giorno in biglietto.giorni %}
-        <li>{{ giorno }}</li>
-        {% endfor %}
-      </ul>
-    </li>
-  </ul>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <section class="card shadow-lg border-0 p-5">
+          <h2 class="mb-5 text-center">Dettagli Biglietto</h2>
+
+          <div class="mb-5">
+            <p class="fs-5 mb-4">
+              <strong>Nome:</strong><br />
+              {{ user.nome }} {{ user.cognome }}
+            </p>
+            
+            <p class="fs-5 mb-4">
+              <strong>Tipo:</strong><br />
+              {{ biglietto.tipo }}
+            </p>
+
+            <p class="fs-5 mb-4">
+              <strong>Data Acquisto:</strong><br />
+              {{ biglietto.data_acquisto }}
+            </p>
+
+            <div class="fs-5 mb-4">
+              <strong>Giorni validi:</strong><br />
+              <ul class="mt-2">
+                {% for giorno in biglietto.giorni %}
+                <li class="mb-2">{{ giorno }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
   {% else %}
   <h3>Acquista un Biglietto</h3>
   <form method="POST" action="{{ url_for('private.compra_biglietto') }}">
