@@ -31,8 +31,6 @@ def performances():
 
     return render_template("public/performances.html", performances=performances, numero_performance=n)
 
-
-
 @public_bp.route("/performances/<int:id>")
 def performance(id):
     perf = performances_dao.get_performance_by_id(id)

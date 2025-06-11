@@ -4,7 +4,6 @@ from dao import biglietti_dao, performances_dao
 import os
 import uuid
 from datetime import datetime, timedelta
-import logging
 
 private_bp = Blueprint('private', __name__)
 
@@ -150,9 +149,6 @@ def modifica_bozza(id):
         flash("Bozza non trovata o già pubblicata.", "danger")
         return redirect(url_for("private.reserved"))
     return render_template("private/modifica_bozza.html", bozza=bozza)
-
-from flask import request, flash, redirect, url_for, render_template
-from datetime import datetime, timedelta
 
 @private_bp.route("/modifica_bozza/<int:id>", methods=["POST"])
 @login_required

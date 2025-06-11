@@ -1,80 +1,119 @@
-{% extends "base.html" %} {% block title %}{{ user.nome }} {{
-user.cognome }}{% endblock %} {% block content %}
-<div class="container mt-5">
-  <h2>Modifica Bozza</h2>
-  <form method="POST">
-    <div class="mb-3">
-      <label for="nome_artista" class="form-label">Nome Artista</label>
-      <input
-        type="text"
-        class="form-control"
-        name="nome_artista"
-        value="{{ bozza.nome_artista }}"
-      />
-    </div>
-    <div class="col-md-4">
-      <label for="giorno" class="form-label">Giorno</label>
-      <select class="form-select" name="giorno" required>
-        <option value="">Seleziona...</option>
-        <option value="Venerdi">Venerdì</option>
-        <option value="Sabato">Sabato</option>
-        <option value="Domenica">Domenica</option>
-      </select>
-    </div>
-    <div class="col-md-2">
-      <label for="ora" class="form-label">Ora</label>
-      <select name="ora" id="ora" class="form-select" required>
-        {% for h in range(0, 24) %}
-        <option value="{{ '%02d' % h }}">{{ '%02d' % h }}</option>
-        {% endfor %}
-      </select>
-    </div>
+{% extends "base.html" %}
 
-    <div class="col-md-2">
-      <label for="minuti" class="form-label">Minuti</label>
-      <select name="minuti" id="minuti" class="form-select" required>
-        {% for m in range(0, 60, 5) %}
-        <option value="{{ '%02d' % m }}">{{ '%02d' % m }}</option>
-        {% endfor %}
-      </select>
+{% block title %}Modifica Bozza{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-lg border-0 p-5">
+        <h2 class="mb-5 text-center">Modifica Bozza</h2>
+
+        <form method="POST">
+          <div class="row g-4">
+            <!-- Nome Artista -->
+            <div class="col-md-6">
+              <label for="nome_artista" class="form-label fs-5">Nome Artista</label>
+              <input
+                type="text"
+                class="form-control fs-5"
+                name="nome_artista"
+                value="{{ bozza.nome_artista }}"
+                required
+              />
+            </div>
+
+            <!-- Giorno -->
+            <div class="col-md-6">
+              <label for="giorno" class="form-label fs-5">Giorno</label>
+              <select class="form-select fs-5" name="giorno" required>
+                <option value="">Seleziona...</option>
+                <option value="Venerdi" {% if bozza.giorno == "Venerdi" %}selected{% endif %}>Venerdì</option>
+                <option value="Sabato" {% if bozza.giorno == "Sabato" %}selected{% endif %}>Sabato</option>
+                <option value="Domenica" {% if bozza.giorno == "Domenica" %}selected{% endif %}>Domenica</option>
+              </select>
+            </div>
+
+            <!-- Ora -->
+            <div class="col-md-2">
+              <label for="ora" class="form-label fs-5">Ora</label>
+              <select name="ora" id="ora" class="form-select fs-5" required>
+                {% for h in range(0, 24) %}
+                <option value="{{ '%02d' % h }}" {% if bozza.ora == '%02d' % h %}selected{% endif %}>
+                  {{ '%02d' % h }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Minuti -->
+            <div class="col-md-2">
+              <label for="minuti" class="form-label fs-5">Minuti</label>
+              <select name="minuti" id="minuti" class="form-select fs-5" required>
+                {% for m in range(0, 60, 5) %}
+                <option value="{{ '%02d' % m }}" {% if bozza.minuti == '%02d' % m %}selected{% endif %}>
+                  {{ '%02d' % m }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Durata -->
+            <div class="col-md-2">
+              <label for="durata" class="form-label fs-5">Durata (minuti)</label>
+              <select name="durata" id="durata" class="form-select fs-5" required>
+                {% for d in range(5, 181, 5) %}
+                <option value="{{ d }}" {% if bozza.durata == d %}selected{% endif %}>{{ d }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <!-- Palco -->
+            <div class="col-md-6">
+              <label for="palco" class="form-label fs-5">Palco</label>
+              <select class="form-select fs-5" name="palco" required>
+                <option value="">Seleziona...</option>
+                <option value="Palco A" {% if bozza.palco == "Palco A" %}selected{% endif %}>Palco A</option>
+                <option value="Palco B" {% if bozza.palco == "Palco B" %}selected{% endif %}>Palco B</option>
+                <option value="Palco C" {% if bozza.palco == "Palco C" %}selected{% endif %}>Palco C</option>
+              </select>
+            </div>
+
+            <!-- Genere -->
+            <div class="col-md-6">
+              <label for="genere" class="form-label fs-5">Genere</label>
+              <select class="form-select fs-5" name="genere" required>
+                <option value="">Seleziona...</option>
+                <option value="Rock" {% if bozza.genere == "Rock" %}selected{% endif %}>Rock</option>
+                <option value="Pop" {% if bozza.genere == "Pop" %}selected{% endif %}>Pop</option>
+                <option value="Jazz" {% if bozza.genere == "Jazz" %}selected{% endif %}>Jazz</option>
+                <option value="Electronic" {% if bozza.genere == "Electronic" %}selected{% endif %}>Electronic</option>
+                <option value="Hip-Hop" {% if bozza.genere == "Hip-Hop" %}selected{% endif %}>Hip-Hop</option>
+                <option value="Classica" {% if bozza.genere == "Classica" %}selected{% endif %}>Classica</option>
+              </select>
+            </div>
+
+            <!-- Descrizione -->
+            <div class="col-12">
+              <label for="descrizione" class="form-label fs-5">Descrizione</label>
+              <textarea
+                class="form-control fs-5"
+                name="descrizione"
+                rows="4"
+                placeholder="Inserisci una descrizione..."
+              >{{ bozza.descrizione }}</textarea>
+            </div>
+
+            <!-- Pulsante -->
+            <div class="col-12 text-center mt-4">
+              <button type="submit" class="btn btn-primary btn-lg px-5 py-3">
+                Salva Modifiche
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="durata" class="form-label">Durata</label>
-      <input
-        type="text"
-        class="form-control"
-        name="durata"
-        value="{{ bozza.durata }}"
-      />
-    </div>
-    <div class="mb-3">
-      <label for="descrizione" class="form-label">Descrizione</label>
-      <textarea class="form-control" name="descrizione">
-{{ bozza.descrizione }}</textarea
-      >
-    </div>
-    <div class="col-md-4">
-      <label for="palco" class="form-label">Palco</label>
-      <select class="form-select" name="palco" required>
-        <option value="">Seleziona...</option>
-        <option value="Palco A">Palco A</option>
-        <option value="Palco B">Palco B</option>
-        <option value="Palco C">Palco C</option>
-      </select>
-    </div>
-    <div class="col-md-4">
-      <label for="genere" class="form-label">Genere</label>
-      <select class="form-select" name="genere" required>
-        <option value="">Seleziona...</option>
-        <option value="Rock">Rock</option>
-        <option value="Pop">Pop</option>
-        <option value="Jazz">Jazz</option>
-        <option value="Electronic">Electronic</option>
-        <option value="Hip-Hop">Hip-Hop</option>
-        <option value="Classica">Classica</option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Salva modifiche</button>
-  </form>
-</div>
+  </div>
+</section>
 {% endblock %}
