@@ -10,29 +10,16 @@
       integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/components/notification.css') }}"
+    />
   </head>
   <body>
     <main>
       <div class="container mt-5" style="max-width: 400px">
+        {% include "components/notification.html" %}
         <h2 class="mb-4">Accedi</h2>
-
-        <!-- Flash messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %} {% if
-        messages %} {% for category, message in messages %}
-        <div
-          class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show"
-          role="alert"
-        >
-          {{ message }}
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="alert"
-            aria-label="Close"
-          ></button>
-        </div>
-        {% endfor %} {% endif %} {% endwith %}
-
         <form
           action="{{ url_for('auth.authenticate') }}"
           method="POST"
