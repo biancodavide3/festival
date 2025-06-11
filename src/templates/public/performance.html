@@ -1,52 +1,81 @@
-{% extends "base.html" %} {% block title %}Performance{%
-endblock %} {% block content %}
+{% extends "base.html" %} {% block title %}{{ performance.nome_artista }} -
+Performance{% endblock %}
+{% block styles %}
+  <link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/public/performance.css') }}"
+/>
+{% endblock %} 
+{% block content %}
 <div class="container py-5">
-  <div class="row">
-    <div class="col-lg-6">
-      <img
-        src="{{ performance.immagine }}"
-        alt="{{ performance.nome_artista }}"
-        class="img-fluid rounded shadow-sm"
-      />
-    </div>
-    <div class="col-lg-6">
-      <h1 class="display-5">{{ performance.nome_artista }}</h1>
-      <p class="lead text-muted">{{ performance.genere }}</p>
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-lg border-0 p-5">
+        
+        <section class="row g-4 flex-md-row-reverse">
+          <div class="col-md-5">
+            <img
+              src="{{ performance.immagine }}"
+              alt="{{ performance.nome_artista }}"
+              class="img-fluid rounded w-100 h-100 fit"
+            />
+          </div>
+          <div class="col-md-7 d-flex flex-column justify-content-center">
+            <h1 class="display-5 mb-5">{{ performance.nome_artista }}</h1>
 
-      <hr />
+            <div class="mb-5">
+              <p class="fs-5 mb-4">
+                <strong>Genere:</strong><br />
+                {{ performance.genere }}
+              </p>
 
-      <ul class="list-group list-group-flush mb-4">
-        <li class="list-group-item">
-          <strong>Giorno:</strong> {{ performance.giorno }}
-        </li>
-        <li class="list-group-item">
-          <strong>Orario:</strong> {{ performance.orario }}
-        </li>
-        <li class="list-group-item">
-          <strong>Durata:</strong> {{ performance.durata }} minuti
-        </li>
-        <li class="list-group-item">
-          <strong>Palco:</strong> {{ performance.palco }}
-        </li>
-        <li class="list-group-item">
-          <strong>Inserita il:</strong> {{ performance.data_inserimento }}
-        </li>
-      </ul>
+              <p class="fs-5 mb-4">
+                <strong>Giorno:</strong><br />
+                {{ performance.giorno }}
+              </p>
 
-      <div class="mb-4">
-        <h5>Descrizione</h5>
-        <p class="text-justify">{{ performance.descrizione }}</p>
+              <p class="fs-5 mb-4">
+                <strong>Orario:</strong><br />
+                {{ performance.orario }}
+              </p>
+
+              <p class="fs-5 mb-4">
+                <strong>Durata:</strong><br />
+                {{ performance.durata }} minuti
+              </p>
+
+              <p class="fs-5 mb-4">
+                <strong>Palco:</strong><br />
+                {{ performance.palco }}
+              </p>
+
+              <p class="fs-5 mb-4">
+                <strong>Inserita il:</strong><br />
+                {{ performance.data_inserimento }}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="row mt-5">
+          <div class="col-12">
+            <h4 class="mb-4">Descrizione</h4>
+            <p class="fs-5 lh-lg text-justify">{{ performance.descrizione }}</p>
+          </div>
+        </section>
+
+        <section class="row mt-5">
+          <div class="col text-center">
+            <a
+              href="{{ url_for('public.performances') }}"
+              class="btn btn-outline-primary btn-lg px-5 py-3"
+            >
+              Torna alla lista delle performance
+            </a>
+          </div>
+        </section>
       </div>
     </div>
-  </div>
-
-  <div class="mt-5 text-center">
-    <a
-      href="{{ url_for('public.performances') }}"
-      class="btn btn-outline-primary"
-    >
-      ← Torna alla lista delle performance
-    </a>
   </div>
 </div>
 {% endblock %}

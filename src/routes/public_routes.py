@@ -21,7 +21,7 @@ def performances():
         filtri_presenti = True
     if palco in ('Palco A', 'Palco B', 'Palco C'):
         filtri_presenti = True
-    if genere in ['Rock', 'Pop', 'Jazz', 'Electronic', 'Hip-Hop', 'Classica']:
+    if genere in ('Rock', 'Pop', 'Jazz', 'Electronic', 'Hip-Hop', 'Classica'):
         filtri_presenti = True
 
     if filtri_presenti:
