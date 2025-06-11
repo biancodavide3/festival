@@ -8,10 +8,8 @@
   border-top-right-radius: 0.25rem;
 }
 
-/* Slideshow */
-
-.carousel-img {
-  height: 500px; 
-  object-fit: cover;
-  object-position: center;
+.card-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
