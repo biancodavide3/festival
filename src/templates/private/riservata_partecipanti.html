@@ -1,113 +1,83 @@
-{% extends "base.html" %} {% block title %}{{ user.nome }} {{ user.cognome }}{%
-endblock %} {% block content %}
+{% extends "base.html" %}
 
-<div class="container mt-5">
+{% block title %}{{ user.nome }} {{ user.cognome }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
   {% if biglietto %}
-  <div class="container py-5">
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <section class="card shadow-lg border-0 p-5">
-          <h2 class="mb-5 text-center">Dettagli Biglietto</h2>
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0 p-5">
+        <h2 class="mb-5 text-center">Dettagli Biglietto</h2>
 
-          <div class="mb-5">
-            <p class="fs-5 mb-4">
-              <strong>Nome:</strong><br />
-              {{ user.nome }} {{ user.cognome }}
-            </p>
-            
-            <p class="fs-5 mb-4">
-              <strong>Tipo:</strong><br />
-              {{ biglietto.tipo }}
-            </p>
+        <div class="mb-5">
+          <p class="fs-5 mb-4">
+            <strong>Nome:</strong><br />
+            {{ user.nome }} {{ user.cognome }}
+          </p>
 
-            <p class="fs-5 mb-4">
-              <strong>Data Acquisto:</strong><br />
-              {{ biglietto.data_acquisto }}
-            </p>
+          <p class="fs-5 mb-4">
+            <strong>Tipo:</strong><br />
+            {{ biglietto.tipo }}
+          </p>
 
-            <div class="fs-5 mb-4">
-              <strong>Giorni validi:</strong><br />
-              <ul class="mt-2">
-                {% for giorno in biglietto.giorni %}
-                <li class="mb-2">{{ giorno }}</li>
-                {% endfor %}
-              </ul>
-            </div>
+          <p class="fs-5 mb-4">
+            <strong>Data Acquisto:</strong><br />
+            {{ biglietto.data_acquisto }}
+          </p>
+
+          <div class="fs-5 mb-4">
+            <strong>Giorni validi:</strong><br />
+            <ul class="mt-2">
+              {% for giorno in biglietto.giorni %}
+              <li class="mb-2">{{ giorno }}</li>
+              {% endfor %}
+            </ul>
           </div>
-        </section>
+        </div>
       </div>
     </div>
   </div>
   {% else %}
-  <h3>Acquista un Biglietto</h3>
-  <form method="POST" action="{{ url_for('private.compra_biglietto') }}">
-    <div class="mb-3">
-      <label for="tipo" class="form-label">Tipo di Biglietto</label>
-      <select class="form-select" id="tipo" name="tipo" required>
-        <option value="" selected disabled>Seleziona un tipo</option>
-        <option value="Biglietto Giornaliero">Biglietto Giornaliero</option>
-        <option value="Pass 2 Giorni">Pass 2 Giorni</option>
-        <option value="Full Pass">Full Pass</option>
-      </select>
-    </div>
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg border-0 p-5">
+        <h2 class="mb-5 text-center">Acquista un Biglietto</h2>
 
-    <div class="mb-3">
-      <label class="form-label">Seleziona i Giorni</label>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          name="giorni"
-          value="Venerdi"
-          id="venerdi"
-        />
-        <label class="form-check-label" for="venerdi">Venerdì</label>
-      </div>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          name="giorni"
-          value="Sabato"
-          id="sabato"
-        />
-        <label class="form-check-label" for="sabato">Sabato</label>
-      </div>
-      <div class="form-check">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          name="giorni"
-          value="Domenica"
-          id="domenica"
-        />
-        <label class="form-check-label" for="domenica">Domenica</label>
+        <form method="POST" action="{{ url_for('private.compra_biglietto') }}">
+          <div class="mb-4">
+            <label for="tipo" class="form-label fs-5">Tipo di Biglietto</label>
+            <select class="form-select fs-5" id="tipo" name="tipo" required>
+              <option value="" selected disabled>Seleziona un tipo</option>
+              <option value="Biglietto Giornaliero">Biglietto Giornaliero</option>
+              <option value="Pass 2 Giorni">Pass 2 Giorni</option>
+              <option value="Full Pass">Full Pass</option>
+            </select>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fs-5 mb-3">Seleziona i Giorni</label>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" name="giorni" value="Venerdi" id="venerdi" />
+              <label class="form-check-label fs-5" for="venerdi">Venerdì</label>
+            </div>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" name="giorni" value="Sabato" id="sabato" />
+              <label class="form-check-label fs-5" for="sabato">Sabato</label>
+            </div>
+            <div class="form-check mb-4">
+              <input class="form-check-input" type="checkbox" name="giorni" value="Domenica" id="domenica" />
+              <label class="form-check-label fs-5" for="domenica">Domenica</label>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg px-5 py-3">Acquista</button>
+          </div>
+        </form>
       </div>
     </div>
-
-    <button type="submit" class="btn btn-primary">Acquista</button>
-  </form>
-
-  <script>
-    const tipoSelect = document.getElementById("tipo");
-    const giorniCheckboxes = document.querySelectorAll('input[name="giorni"]');
-
-    tipoSelect.addEventListener("change", () => {
-      const tipo = tipoSelect.value;
-
-      giorniCheckboxes.forEach((cb) => {
-        cb.checked = false;
-        cb.disabled = false;
-      });
-
-      if (tipo === "Full Pass") {
-        giorniCheckboxes.forEach((cb) => {
-          cb.checked = true;
-          cb.disabled = true;
-        });
-      }
-    });
-  </script>
+  </div>
   {% endif %}
 </div>
 {% endblock %}

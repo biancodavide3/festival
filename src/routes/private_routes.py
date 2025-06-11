@@ -36,7 +36,6 @@ def compra_biglietto():
         flash("Seleziona un tipo di biglietto valido", "danger")
         return redirect(url_for("private.reserved"))
 
-    # Validazione giorni per tipo biglietto
     if tipo == "Full Pass":
         if set(giorni) != set(giorni_validi):
             flash("Seleziona tutti i giorni per il full pass", "danger")
@@ -60,16 +59,13 @@ def compra_biglietto():
                 flash("Seleziona 2 giorni validi per il biglietto", "danger")
                 return redirect(url_for("private.reserved"))
 
-    # Recupera le statistiche attuali
     stats = biglietti_dao.get_statistiche_biglietti_per_giorno()
 
-    # Controllo capienza massima (200) per ogni giorno scelto
     for giorno in giorni:
-        if stats.get(giorno) >= 3:
+        if stats.get(giorno) >= 200:
             flash(f"Limite massimo di 200 partecipanti raggiunto per il giorno {giorno}. Riprova con altri giorni.", "danger")
             return redirect(url_for("private.reserved"))
 
-    # Procedi con l'aggiunta del biglietto
     if not biglietti_dao.add_biglietto(current_user.id, tipo, giorni):
         flash("Errore nell'acquisto del biglietto. Riprova.", "danger")
         return redirect(url_for("private.reserved"))
