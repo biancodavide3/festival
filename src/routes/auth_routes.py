@@ -21,7 +21,7 @@ def logout():
     flash("Logout effettuato con successo!", "success")
     return redirect(url_for("public.home"))
 
-# form actions
+# ---------- form actions ------------------------
 
 @auth_bp.route("/subscribe", methods=["POST"])
 def subscribe():
@@ -38,7 +38,7 @@ def subscribe():
     if len(password) < 8:
         flash("Password troppo corta", "error")
         return redirect(url_for("auth.signup"))
-    password_hash = generate_password_hash(password)
+    password_hash = generate_password_hash(password, method="scrypt")
     ruolo = request.form.get("ruolo")
     if ruolo not in ("organizzatore", "partecipante"):
         flash("Ruolo non valido", "error")

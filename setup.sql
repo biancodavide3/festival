@@ -1,4 +1,4 @@
--- schema
+-- Schema
 
 CREATE TABLE IF NOT EXISTS utenti(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,14 +41,14 @@ CREATE TABLE IF NOT EXISTS biglietti_giorni (
     FOREIGN KEY(id_biglietto) REFERENCES biglietti(id)
 );
 
--- dati
+-- Dati (la password per ogni utente e' "password")
 
 INSERT INTO utenti (nome, cognome, email, password, ruolo) VALUES
-('Luna', 'Celeste', 'luna@aurora.com', 'organizzatore123', 'organizzatore'),
-('Marco', 'Bosco', 'marco@aurora.com', 'organizzatore123', 'organizzatore'),
-('Anna', 'Verdi', 'anna@gmail.com', 'partecipante123', 'partecipante'),
-('Giorgio', 'Neri', 'giorgio@gmail.com', 'partecipante123', 'partecipante'),
-('Elisa', 'Rossi', 'elisa@gmail.com', 'partecipante123', 'partecipante');
+('Andrea', 'Bianchi', 'andrea@gmail.com', 'scrypt:32768:8:1$JfuxD9WFwpX33phC$53a19f7b55a866cb760c4fe6dd58752c21f236182cc4118d61bd8b0abd563d76b10c792dcda0f1a700a5a13bec620ccf4b0e959f863f89fcdd503d0a8001be9d', 'organizzatore'),
+('Marco', 'Bosco', 'marco@gmail.com', 'scrypt:32768:8:1$JfuxD9WFwpX33phC$53a19f7b55a866cb760c4fe6dd58752c21f236182cc4118d61bd8b0abd563d76b10c792dcda0f1a700a5a13bec620ccf4b0e959f863f89fcdd503d0a8001be9d', 'organizzatore'),
+('Anna', 'Verdi', 'anna@gmail.com', 'scrypt:32768:8:1$JfuxD9WFwpX33phC$53a19f7b55a866cb760c4fe6dd58752c21f236182cc4118d61bd8b0abd563d76b10c792dcda0f1a700a5a13bec620ccf4b0e959f863f89fcdd503d0a8001be9d', 'partecipante'),
+('Giorgio', 'Neri', 'giorgio@gmail.com', 'scrypt:32768:8:1$JfuxD9WFwpX33phC$53a19f7b55a866cb760c4fe6dd58752c21f236182cc4118d61bd8b0abd563d76b10c792dcda0f1a700a5a13bec620ccf4b0e959f863f89fcdd503d0a8001be9d', 'partecipante'),
+('Elisa', 'Rossi', 'elisa@gmail.com', 'scrypt:32768:8:1$JfuxD9WFwpX33phC$53a19f7b55a866cb760c4fe6dd58752c21f236182cc4118d61bd8b0abd563d76b10c792dcda0f1a700a5a13bec620ccf4b0e959f863f89fcdd503d0a8001be9d', 'partecipante');
 
 INSERT INTO performances (nome_artista, giorno, orario, durata, descrizione, palco, genere, immagine, pubblicato, id_organizzatore)
 VALUES
@@ -79,7 +79,7 @@ INSERT INTO biglietti (id_partecipante, tipo) VALUES
 (4, 'Pass 2 Giorni'),
 (5, 'Full Pass');
 
--- un tipo di biglietto ciascuno
+-- Un tipo di biglietto ciascuno
 
 INSERT INTO biglietti_giorni (id_biglietto, giorno) VALUES
 (1, 'Venerdi');
