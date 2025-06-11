@@ -1,0 +1,26 @@
+ci sono 5 utenti registrati come richiesto
+la password e' "password" per tutti loro e le email
+
+organizzatori:
+andrea@gmail.com
+marco@gmail.com
+
+partecipanti:
+elisa@gmail.com
+giorgio@gmail.com
+anna@gmail.com
+
+configura il venv se non gia' configurato:
+
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+
+riconfigura il database alla condizione iniziale della consegna se necessario:
+
+python3 migrate.py
+
+lancia il server:
+
+python3 src/app.py
+
