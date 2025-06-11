@@ -1,0 +1,17 @@
+ci sono 5 utenti registrati come richiesto
+la password e' "password" per tutti loro e le email
+
+organizzatori:
+andrea@gmail.com
+marco@gmail.com
+
+partecipanti:
+elisa@gmail.com
+giorgio@gmail.com
+anna@gmail.com
+
+ho implementato anche degli script che permettono di riportare il database alla 
+condizione iniziale della consegna basta eseguire il comando
+
+python3 migrate.py
+

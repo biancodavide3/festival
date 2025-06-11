@@ -1,3 +1,7 @@
+-- ATTENZIONE non fa parte dell'applicazione flask in se
+-- viene eseguito da migrate.py per riportare il database allo stato iniziale 
+-- richiesto dalla consegna annulando ogni modifica fatta in fase di testing
+
 -- Schema
 
 CREATE TABLE IF NOT EXISTS utenti(
