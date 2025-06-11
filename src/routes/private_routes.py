@@ -164,7 +164,6 @@ def salva_modifiche_bozza(id):
     orario = f"{data['ora']}:{data['minuti']}"
     durata = data["durata"]
 
-    # Controllo sovrapposizione
     sovrapposta = controlla_sovrapposizione(
         giorno=data["giorno"],
         palco=data["palco"],
@@ -174,7 +173,6 @@ def salva_modifiche_bozza(id):
 
     if sovrapposta:
         flash("Attenzione: la performance si sovrappone a un'altra già pubblicata!", "danger")
-        # Ricarichiamo la bozza per ripopolare il form
         bozza = performances_dao.get_bozza_by_id(id)
         return render_template("private/modifica_bozza.html", bozza=bozza)
     
