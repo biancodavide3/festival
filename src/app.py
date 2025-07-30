@@ -30,4 +30,4 @@ app.register_blueprint(private_bp)
 # comodo per accedere il sito in lan e lanciare con python3 src/app.py
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5003)

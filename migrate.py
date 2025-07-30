@@ -1,5 +1,5 @@
 # ATTENZIONE non fa parte dell'applicazione flask in se 
-# effettua la migrazione del database allo stato iniziale richiesto dalla consegna
+# effettua la migrazione del database allo stato iniziale
 # annullando ogni azione fatta in fase di testing manuale
 
 import sqlite3

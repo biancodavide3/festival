@@ -1,5 +1,5 @@
 # ATTENZIONE non fa parte dell'applicazione flask in se
-# serviva solo a ottenere l'hash della password "password" utilizzata per tutti gli utenti
+# permette di ottenere l'hash di una password con lo stesso algoritmo utilizzato dall'applicatione
 
 from werkzeug.security import generate_password_hash
 
