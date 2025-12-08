@@ -1,18 +1,26 @@
-# ATTENZIONE non fa parte dell'applicazione flask in se 
-# effettua la migrazione del database allo stato iniziale
-# annullando ogni azione fatta in fase di testing manuale
-
 import sqlite3
 import os
 
-if os.path.exists("festival.db"):
-    os.remove("festival.db")
+# Attenzione non fa parte dell'applicazione flask in se
+# serve solo per resettare il db durante lo sviluppo
 
-conn = sqlite3.connect("festival.db")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(BASE_DIR, "festival.db")
+SCHEMA_PATH = os.path.join(BASE_DIR, "migrate.sql")
+
+# rimuove il db esistente
+if os.path.exists(DB_PATH):
+    os.remove(DB_PATH)
+
+# ricrea il db
+conn = sqlite3.connect(DB_PATH)
 cursor = conn.cursor()
-with open("migrate.sql", 'r', encoding='utf-8') as f:
+
+with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
     schema_sql = f.read()
+
 cursor.executescript(schema_sql)
 conn.commit()
 conn.close()
-print("Database del festival riconfigurato correttamente!")
+
+print(f"Database del festival resettato correttamente: {DB_PATH}")
